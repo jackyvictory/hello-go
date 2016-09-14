@@ -1,3 +1,7 @@
+因为rainbow比较大，clone的时候只下载一个分支：
+
+git clone git@github.com:CardInfoLink/rainbow.git --branch auto --single-branch supermario
+
 
 准备工具
 
