@@ -1,0 +1,8 @@
+---
+  - name: add group {{user_name}}
+    group: name={{user_name}} state=present
+  - name: generate encrypted password
+    shell: mkpasswd --method=SHA-512 {{ user_password }}
+    register: encrypted_user_password
+  - name: add user {{user_name}}
+    user: name={{user_name}} group={{user_name}} shell=/bin/bash password={{encrypted_user_password.stdout}}

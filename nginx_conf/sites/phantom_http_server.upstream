@@ -1,0 +1,4 @@
+upstream phantom_http_server {
+    server app1.set.shou.money:6900;
+    server app2.set.shou.money:6900;
+}

@@ -1,0 +1,37 @@
+# setup server by root power
+
+---
+#1. create quick user
+#2. add environment variable
+#3. [REMOVED]upload app files
+#4. [REMOVED]app restart
+
+- hosts: webservers
+  vars:
+    softlink_name: current
+    user_name: quick
+    user_password: test # make it secret
+  become: yes
+  become_method: sudo
+  roles:
+  - setup-common
+  - setup-adduser
+  - setup-app
+
+#1. create nginx user (sudo)
+#2. install nginx
+#3. copy source files
+#4. nginx reload
+
+- hosts: nginxservers
+  vars:
+    nginx_location: /opt/nginx
+    nginx_version: 1.10.1
+    user_name: nginx
+    user_password: nginx123456 # make it secret
+  become: yes
+  become_method: sudo
+  roles:
+  - setup-common
+  - setup-adduser
+  - setup-nginx

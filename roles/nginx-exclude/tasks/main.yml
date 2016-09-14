@@ -1,0 +1,17 @@
+---
+    - name: remove {{inventory_hostname}}/{{app_name}} from nginx upstream pool
+      template: src=templates/http_server_exclude.upstream.j2 dest={{nginx_location}}/conf/sites/{{upstream_name}}.upstream
+      delegate_to: "{{ item }}"
+      with_items: "{{groups.nginxservers}}"
+    - name: remove tcp/{{inventory_hostname}}/{{app_name}} from nginx upstream pool
+      template: src=templates/quickpay_tcp_server_exclude.upstream.j2 dest={{nginx_location}}/conf/sites/quickpay_tcp_server.upstream
+      delegate_to: "{{ item }}"
+      with_items: "{{groups.nginxservers}}"
+      when: app_name == "quickpay"
+    - name: reload nginx
+      command: chdir={{nginx_location}} sbin/nginx -s reload
+      delegate_to: "{{ item }}"
+      become: yes
+      become_method: sudo
+      with_items: "{{groups.nginxservers}}"
+    - pause: prompt="service is removed from load balancer and please verify ..."

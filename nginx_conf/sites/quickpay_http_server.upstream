@@ -1,0 +1,4 @@
+upstream quickpay_http_server {
+    server app1.set.shou.money:6800;
+    server app2.set.shou.money:6800;
+}

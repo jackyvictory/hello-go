@@ -1,0 +1,7 @@
+---
+  - name: rollback to version {{previous_version}}
+    file: src={{workspace}}{{previous_version}} dest={{workspace}}{{softlink_name}} state=link
+  - name: restart app
+    shell: chdir={{workspace}}{{softlink_name}} bash -l './restart.sh'
+    register: restart_logs
+  - debug: msg={{restart_logs.stdout_lines}}

@@ -1,0 +1,44 @@
+---
+# TODO: configurable
+  - name: configure /etc/hosts
+    lineinfile: dest=/etc/hosts line='192.168.99.20      app1    app1.set.shou.money' regexp='192.168.99.20      app1    app1.set.shou.money' state=present
+  - name: configure /etc/hosts
+    lineinfile: dest=/etc/hosts line='192.168.99.30      app2    app2.set.shou.money' regexp='192.168.99.30      app2    app2.set.shou.money' state=present
+#  - name: restart network
+#    service: name=networking state=restarted
+  - name: adding existing user {{user_name}} to group sudo
+    user: name={{user_name}} groups=sudo append=yes
+  - name: download nginx
+# module unarchive has bug
+    get_url: url=https://nginx.org/download/nginx-{{nginx_version}}.tar.gz dest=/opt/nginx-{{nginx_version}}.tar.gz
+  - name: extract archive
+    command: /bin/tar xvf /opt/nginx-{{nginx_version}}.tar.gz -C /opt/ creates=/opt/nginx-{{nginx_version}}
+  - name: install dependencies for nginx
+    apt: pkg=nginx state=build-dep
+  - name: install nginx - configure
+    command: chdir=/opt/nginx-{{nginx_version}}/ ./configure --prefix={{nginx_location}} --with-http_ssl_module --with-http_v2_module --with-http_realip_module --with-http_gunzip_module --with-http_gzip_static_module --with-http_auth_request_module --with-http_stub_status_module --with-threads --with-stream --with-stream_ssl_module creates={{nginx_location}}
+  - name: install nginx - make
+    command: chdir=/opt/nginx-{{nginx_version}}/ make creates={{nginx_location}}
+  - name: install nginx - make install
+    command: chdir=/opt/nginx-{{nginx_version}}/ make install creates={{nginx_location}}
+  - name: change ownership of nginx installation
+    file: path={{nginx_location}}/ owner={{user_name}} group={{user_name}} state=directory recurse=yes
+  - name: copy nginx.conf to {{nginx_location}}/conf
+    copy: src="nginx_conf/nginx.conf" dest={{nginx_location}}/conf mode=0644
+    become: yes
+    become_user: "{{user_name}}"
+  - name: make {{nginx_location}}/conf/sites if exists
+    file: path={{nginx_location}}/conf/sites state=directory mode=0755
+    become: yes
+    become_user: "{{user_name}}"
+  - name: copy nginx.conf to {{nginx_location}}/conf/sites
+    copy: src={{ item }} dest={{nginx_location}}/conf/sites mode=0644
+    with_fileglob: "nginx_conf/sites/*"
+    become: yes
+    become_user: "{{user_name}}"
+  - name: start nginx
+#    command: chdir={{nginx_location}} sbin/nginx -s reload
+    command: chdir={{nginx_location}} sbin/nginx
+# can't become to nginx and with sudo permission
+#    become: yes
+#    become_user: "{{user_name}}"

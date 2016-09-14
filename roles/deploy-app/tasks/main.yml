@@ -1,0 +1,22 @@
+---
+  - name: upload and extract package
+    unarchive: src={{ item }} dest={{workspace}}
+    with_fileglob: "{{package_location}}/{{app_name}}*.{{quickpay_env}}.tar.gz"
+  - name: get latest app name
+  # get app20160909112849 from app20160909112849.develop.tar.gz
+  # warning: possible issue, naming package incarefully
+    local_action: shell ls -1 {{package_location}}/{{app_name}}*.{{quickpay_env}}.tar.gz |  head -n 1 |awk -F'/' '{print $NF}' | awk -F'.' '{print $1}'
+    register: app_latestversion
+    become: no
+  # current -> app20160909112849
+  - name: create softlink to latest version {{app_latestversion.stdout}} of app
+    file: src={{workspace}}{{app_latestversion.stdout}} dest={{workspace}}{{softlink_name}} state=link
+  - name: restart app
+    shell: chdir={{workspace}}{{softlink_name}} bash -l './restart.sh'
+    register: restart_logs
+  - debug: msg={{restart_logs.stdout_lines}}
+  - pause: prompt="app deployment is done and please verify ..."
+#  - name: show logs
+#    shell: chdir={{workspace}}{{softlink_name}} tail -n 20 logs/{{app_name}}.log
+#    register: app_logs
+#  - debug: msg={{app_logs.stdout_lines}}

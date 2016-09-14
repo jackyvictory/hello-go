@@ -1,0 +1,28 @@
+# 建议部署使用专属的APP账号,不使用高权限如ROOT/SUDO账号
+# 只完成替换APP包的动作和重启
+
+---
+
+#0. apply for every web servers, deploy one by one
+#1. record previous app package version
+#2. remove self from nginx upstream pool
+#3. deploy app
+#4. add self to nginx upstream pool
+
+- hosts: webservers
+  serial: 1
+  vars:
+    softlink_name: current
+    package_location: ../dist
+    nginx_location: /opt/nginx
+  pre_tasks:
+  # TODO: 校验工作??? 包是否存在
+    - name: get current softlink
+      shell: ls -l {{workspace}} | grep "{{softlink_name}} ->" | awk 'NF>1{print $NF}' | awk -F'/' '{print $NF}'
+      register: current_softlink
+    - debug: msg="{{current_softlink.stdout}}"
+    - local_action: copy content={{ current_softlink.stdout }} dest=./rollback.version
+  roles:
+    - { role: nginx-exclude }
+    - { role: deploy-app }
+    - { role: nginx-full }
