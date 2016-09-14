@@ -1,0 +1,6 @@
+---
+    quickpay_env: testing
+    workspace: /opt/phantom/
+    app_name: phantom
+    upstream_name: phantom_http_server
+    upstream_port: 6900

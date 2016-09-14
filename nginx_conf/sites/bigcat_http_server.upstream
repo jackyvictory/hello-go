@@ -1,0 +1,4 @@
+upstream bigcat_http_server {
+    server app1.set.shou.money:7000;
+    server app2.set.shou.money:7000;
+}

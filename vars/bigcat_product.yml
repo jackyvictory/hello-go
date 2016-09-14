@@ -1,0 +1,6 @@
+---
+    quickpay_env: product
+    workspace: /opt/BigCat/
+    app_name: bigcat
+    upstream_name: bigcat_http_server
+    upstream_port: 7000

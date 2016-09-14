@@ -1,0 +1,20 @@
+# 建议部署使用专属的APP账号,不使用高权限如ROOT/SUDO账号
+# 只完成替换APP包的动作和重启
+
+---
+- hosts: webservers
+  serial: 1
+  vars:
+    softlink_name: current
+    nginx_location: /opt/nginx
+    previous_version: "{{ lookup('file', './rollback.version')}}"
+  pre_tasks:
+    - name: get current softlink
+      shell: ls -l {{workspace}} | grep "{{softlink_name}} ->" | awk 'NF>1{print $NF}' | awk -F'/' '{print $NF}'
+      register: current_softlink
+    - debug: msg="current version, {{current_softlink.stdout}}, previous version, {{previous_version}}"
+    # if {{previous_version}} == {{current_softlink.stdout}}, skip
+  roles:
+    - { role: nginx-exclude, when: 'current_softlink.stdout != "{{previous_version}}"' }
+    - { role: rollback-app, when: 'current_softlink.stdout != "{{previous_version}}"' }
+    - { role: nginx-full, when: 'current_softlink.stdout != "{{previous_version}}"' }
