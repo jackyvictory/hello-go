@@ -15,7 +15,6 @@ username: nginx
 2. 保证`nginx`用户有读写`/opt/nginx/conf`目录的权限
 
 
-
 ## 2. Release （nginx配置、网络配置）
 
 ### 2.1 将线下nginx的流量转到线上nginx，而不是直接转给app服务器。
@@ -23,15 +22,21 @@ username: nginx
 #### 2.1.1 线下nginx配置（研发）
 
 ```
-TODO: 线下配置没权限看
+1. 因为没权限直接上传文件到线下nginx，配置修改参考以下：
+
+nginx_conf_offline/sites/quickpay.http.conf
+nginx_conf_offline/sites/quickpay.stream.conf
 
 ```
 
-tcp转发 待验证（@陈诚）
-https转发 待验证 (@john)
-
 #### 2.1.2 线下防火墙配置 （数据中心）
-保证线下出口网络能到达
+保证线下出口网络能到达。打开到showmoney.cn（121.40.167.112）的以下端口：
+```
+80
+443
+6000
+6001
+```
 
 验证：
 
