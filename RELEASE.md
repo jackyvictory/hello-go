@@ -27,6 +27,10 @@ username: nginx
 nginx_conf_offline/sites/quickpay.http.conf
 nginx_conf_offline/sites/quickpay.stream.conf
 
+2. 在/etc/hosts添加记录
+
+121.40.167.112 showmoney.cn
+
 ```
 
 #### 2.1.2 线下防火墙配置 （数据中心）
