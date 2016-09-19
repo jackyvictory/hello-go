@@ -53,13 +53,13 @@ sudo sbin/nginx -s reload
 
 1. 先停nginx（root执行）
 cd /opt/nginx
-sudo sbin/nginx -s stop
+sbin/nginx -s stop
 
 2. 改/opt/nginx的owner（root执行）
-sudo chown nginx:nginx -R /opt/nginx
+chown nginx:nginx -R /opt/nginx
 
 3. 使得nginx在`nginx`用户下具有绑定1024以下端口的权限（root执行）
-sudo setcap cap_net_bind_service=ep /opt/nginx/sbin/nginx
+setcap cap_net_bind_service=ep /opt/nginx/sbin/nginx
 
 4. nginx用户下执行
 cd /opt/nginx
