@@ -1,39 +1,7 @@
 # 自动化部署方案上线步骤
 
-## 1. Pre Release （上线前的操作步骤）
-
-### 1.1 云收银线上nginx用户加入到sudo组
-
-```
-ip：121.40.167.112
-username: nginx
-```
-
-两件事情：
-
-1. `nginx`用户在sudo组内
-2. 保证`nginx`用户有读写`/opt/nginx/conf`目录的权限
-
-
-## 2. Release （nginx配置、网络配置）
-
-### 2.1 将线下nginx的流量转到线上nginx，而不是直接转给app服务器。
-
-#### 2.1.1 线下nginx配置（研发）
-
-```
-1. 因为没权限直接上传文件到线下nginx，配置修改参考以下：
-
-nginx_conf_offline/sites/quickpay.http.conf
-nginx_conf_offline/sites/quickpay.stream.conf
-
-2. 在/etc/hosts添加记录
-
-121.40.167.112 showmoney.cn
-
-```
-
-#### 2.1.2 线下防火墙配置 （数据中心）
+## 1. Pre Release （上线准备工作）
+#### 1.1 线下防火墙配置 （数据中心协助）
 保证线下出口网络能到达。打开到showmoney.cn（121.40.167.112）的以下端口：
 ```
 80
@@ -51,7 +19,39 @@ telnet showmoney.cn 6000
 telnet showmoney.cn 6001
 ```
 
-### 2.2 线上nginx upstream pool分离 （研发）
+## 2. Release （nginx配置）
+
+### 2.1 线下nginx的流量转到线上nginx，而不是直接转给app服务器。
+```
+10.99.1.67
+```
+
+```
+1. 因为没权限直接上传文件到线下nginx，配置修改参考以下：
+
+nginx_conf_offline/sites/quickpay.http.conf
+nginx_conf_offline/sites/quickpay.stream.conf
+
+2. 在/etc/hosts添加记录
+
+121.40.167.112 showmoney.cn
+
+```
+
+### 2.2 线上nginx用户权限控制
+
+```
+ip：121.40.167.112
+username: nginx
+```
+
+保证如下：
+
+1. `nginx`用户是`/opt/nginx`的owner
+2. `nginx`用户可以执行sbin/nginx
+
+
+### 2.3 线上nginx upstream pool分离
 分离后的配置已经由github管理起来了。往后发布时候的app1, app2应用切分，全由自动部署脚本来完成。
 
 1. 同步配置文件到服务器
