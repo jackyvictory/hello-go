@@ -9,6 +9,9 @@
 1.6 启动云收银桌面版，将请求IP和端口改为虚拟线下nginx的IP和tcp监听端口。
 1.7 执行一笔下单交易。
 1.8 用tcpdump -i eth0 -vnn dst host <IP> and dst port <PORT> 看nginx是否将请求转发到目的IP端口。
+    10.30.1.38.58781 > 10.30.1.99.6000: Flags [P.], cksum 0xc0bf (correct), seq 0:269, ack 1, win 16425, length 269
+    10.30.1.99.54742 > 121.40.86.222.6000: Flags [P.], cksum 0xdcba (incorrect -> 0x4808), seq 0:269, ack 1, win 229, options [nop,nop,TS val 1156372 ecr 2073314995], length 269
+    10.30.1.99是虚拟线下nginx，10.30.1.38.58781是扫码客户端，121.40.86.222.6000是线上nginx。
 1.9 若1.8中显示nginx执行了转发，并且交易成功，说明测试通过。
 
 2. 模拟线下nginx（http服务），直连线上nginx
