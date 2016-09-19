@@ -21,7 +21,7 @@ telnet showmoney.cn 6001
 
 ## 2. Release （nginx配置）
 
-### 2.1 线下nginx的流量转到线上nginx，而不是直接转给app服务器。0
+### 2.1 线下nginx的流量转到线上nginx，而不是直接转给app服务器。
 ```
 线下nginx: 10.99.1.67
 ```
