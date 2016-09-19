@@ -23,7 +23,7 @@ telnet showmoney.cn 6001
 
 ### 2.1 线下nginx的流量转到线上nginx，而不是直接转给app服务器。
 ```
-10.99.1.67
+线下nginx: 10.99.1.67
 ```
 
 ```
@@ -49,7 +49,7 @@ username: nginx
 
 1. `nginx`用户是`/opt/nginx`的owner
 2. `nginx`用户可以执行sbin/nginx
-
+3. 以上两点完成后，执行sudo setcap cap_net_bind_service=ep /opt/nginx/sbin/nginx，使得nginx在`nginx`用户下具有绑定1024以下端口的权限
 
 ### 2.3 线上nginx upstream pool分离
 分离后的配置已经由github管理起来了。往后发布时候的app1, app2应用切分，全由自动部署脚本来完成。
@@ -67,7 +67,7 @@ rsync -rcv  --progress ./ nginx@121.40.167.112:/opt/nginx/conf/sites
 
 ```
 cd /opt/nginx
-sudo sbin/nginx -s reload
+sbin/nginx -s reload
 
 ```
 
