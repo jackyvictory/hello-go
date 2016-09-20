@@ -1,0 +1,4 @@
+---
+    quickpay_env: product
+    workspace: /opt/magisett/
+    app_name: magisett
