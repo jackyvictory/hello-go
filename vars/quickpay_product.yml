@@ -1,6 +1,0 @@
----
-    quickpay_env: product
-    workspace: /opt/quickpay/
-    app_name: quickpay
-    upstream_name: quickpay_http_server
-    upstream_port: 6800
