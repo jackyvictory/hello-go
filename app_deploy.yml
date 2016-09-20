@@ -23,5 +23,3 @@
     - local_action: copy content={{ current_softlink.stdout }} dest=./rollback.version
   roles:
     - { role: deploy-app }
-  tasks:
-  - pause: prompt="app deployment is done and please verify ..."
