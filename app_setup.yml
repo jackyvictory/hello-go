@@ -17,3 +17,21 @@
   - setup-common
   - setup-adduser
   - setup-app
+
+#1. create nginx user (sudo)
+#2. install nginx
+#3. copy source files
+#4. nginx reload
+
+- hosts: nginxservers
+  vars:
+    nginx_location: /opt/nginx
+    nginx_version: 1.10.1
+    user_name: nginx
+    user_password: nginx123456 # make it secret
+  become: yes
+  become_method: sudo
+  roles:
+  - { role: setup-common, when: '"nginxservers" in group_names' }
+  - { role: setup-adduser, when: '"nginxservers" in group_names' }
+  - { role: setup-nginx, when: '"nginxservers" in group_names' }
