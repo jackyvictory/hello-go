@@ -31,6 +31,7 @@ git clone git@github.com:CardInfoLink/rainbow.git --branch auto --single-branch 
 4. 正式发布，按照提示进行（备注：ansible-playbook脚本是否需要用.sh封装起来）
 cd supermario
 ansible-playbook -i hosts.dev.deploy app_deploy.yml --extra-vars "@vars/bigcat_dev.yml" --ask-sudo-pass
+提示SUDO password: 时，需要输入`nginx`机器的`nginx`用户的密码。
 
 5. 回退（可选）
 ansible-playbook -i hosts.dev.deploy app_rollback.yml --extra-vars "@vars/bigcat_dev.yml" --ask-sudo-pass
