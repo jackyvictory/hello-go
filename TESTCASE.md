@@ -27,7 +27,7 @@
 #### 3.1 若配置文件在2中已经修改完成，则生成一个往线下走的apk包。
 #### 3.2 用这个apk测试登录，如果能成功登录说明测试通过。
 
-## 本地内网虚拟机完整执行一次`quickpay`的自动部署测试
+## 4. 本地内网虚拟机完整执行一次`quickpay`的自动部署测试
 ##### 4.1 在第一次`[nginx-exclude : pause]`的时候，验证服务可以正常使用，并且只有`app2`提供服务。
 * 查看conf/sites/quickpay_tcp_server.upstream和conf/sites/quickpay_http_server.upstream是否只有app2
 * curl http://192.168.99.10/scanpay/		验证http，192.168.99.10是nginx机器
