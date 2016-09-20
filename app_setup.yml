@@ -32,6 +32,6 @@
   become: yes
   become_method: sudo
   roles:
-  - { role: setup-common, when: '"nginxservers" in group_names' }
-  - { role: setup-adduser, when: '"nginxservers" in group_names' }
-  - { role: setup-nginx, when: '"nginxservers" in group_names' }
+  - { role: setup-common, when: '"nginxservers" in groups' }
+  - { role: setup-adduser, when: '"nginxservers" in groups' }
+  - { role: setup-nginx, when: '"nginxservers" in groups' }
