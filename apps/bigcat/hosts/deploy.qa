@@ -1,0 +1,7 @@
+# inventory naming conversion: use domain name
+
+[nginxservers]
+test.ipay.so ansible_host=121.40.86.222 ansible_port=22 ansible_user=webapp
+
+[webservers]
+test.ipay.so ansible_host=121.40.86.222 ansible_port=22 ansible_user=webapp
