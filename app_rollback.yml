@@ -6,7 +6,6 @@
   serial: 1
   vars:
     softlink_name: current
-    nginx_location: /opt/nginx
     previous_version: "{{ lookup('file', './rollback.version')}}"
   pre_tasks:
     - name: get current softlink
@@ -15,6 +14,6 @@
     - debug: msg="current version, {{current_softlink.stdout}}, previous version, {{previous_version}}"
     # if {{previous_version}} == {{current_softlink.stdout}}, skip
   roles:
-    - { role: nginx-exclude, when: 'current_softlink.stdout != "{{previous_version}}"' }
     - { role: rollback-app, when: 'current_softlink.stdout != "{{previous_version}}"' }
-    - { role: nginx-full, when: 'current_softlink.stdout != "{{previous_version}}"' }
+  tasks:
+    - pause: prompt="{{ansible_hostname}} rollback is done and please verify ..."

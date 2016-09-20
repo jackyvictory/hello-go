@@ -14,7 +14,6 @@
   vars:
     softlink_name: current
     package_location: ../dist
-    nginx_location: /opt/nginx
   pre_tasks:
   # TODO: 校验工作??? 包是否存在
     - name: get current softlink
@@ -23,6 +22,6 @@
     - debug: msg="{{current_softlink.stdout}}"
     - local_action: copy content={{ current_softlink.stdout }} dest=./rollback.version
   roles:
-    - { role: nginx-exclude }
     - { role: deploy-app }
-    - { role: nginx-full }
+  tasks:
+  - pause: prompt="app deployment is done and please verify ..."

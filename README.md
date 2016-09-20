@@ -20,7 +20,6 @@ vagrant up
 ```
 默认分配sudo账户: vagrant/vagrant
 
-nginx: 192.168.99.10
 app1: 192.168.99.20
 app2: 192.168.99.30
 
@@ -42,29 +41,25 @@ app20160908165417.testing.tar.gz
 
 ```
 
-在干净机器上构建bigcat环境, 脚本中为nginx服务器创建了nginx用户(sudo),默认密码nginx123456,为web服务器创建了quick用户,密码默认为test
+在干净机器上构建magisett环境, 脚本中为后端服务创建了quick用户,密码默认为test
 
-以bigcat为例,quickpay, phantom类似.
+以magisett为例,其它纯后端服务类似.
 
 ```
 
-ansible-playbook -i hosts.dev.setup app_setup.yml --extra-vars "@vars/bigcat_dev.yml" --ask-sudo-pass
+ansible-playbook -i hosts.dev.setup app_setup.yml --extra-vars "@vars/magisett_dev.yml" --ask-sudo-pass
 
 (passwd: vagrant)
 
-ansible-playbook -i hosts.dev.deploy app_deploy.yml --extra-vars "@vars/bigcat_dev.yml" --ask-sudo-pass
-
-(暂时没有nginx参与,passwd: nginx123456)
+ansible-playbook -i hosts.dev.deploy app_deploy.yml --extra-vars "@vars/magisett_dev.yml"
 
 (单台验证有问题/全量部署后有问题,可以选择回退.程序本身会做选择性回退,通过比较服务器app版本与本地记录的之前版本,如果相同,就跳过回退操作)
 
-ansible-playbook -i hosts.dev.deploy app_rollback.yml --extra-vars "@vars/bigcat_dev.yml" --ask-sudo-pass
-```
+ansible-playbook -i hosts.dev.deploy app_rollback.yml --extra-vars "@vars/magisett_dev.yml"
 
-ansible-playbook -i hosts.dev.deploy app_deploy.yml --extra-vars "@vars/quickpay_dev.yml" --ask-sudo-pass
-
-本地就能访问bigcat服务了
+本地就能访问magisett服务了
 
 ```
-http://192.168.99.10/app/v3/login
+http://192.168.99.20:6910/settle/run
+http://192.168.99.30:6910/settle/run
 ```
