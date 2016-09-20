@@ -31,6 +31,7 @@ git clone git@github.com:CardInfoLink/rainbow.git --branch auto --single-branch 
 4. 正式发布，按照提示进行（备注：ansible-playbook脚本是否需要用.sh封装起来）
 cd supermario
 ansible-playbook -i hosts.dev.deploy app_deploy.yml --extra-vars "@vars/bigcat_dev.yml" --ask-sudo-pass
+提示SUDO password: 时，需要输入`nginx`机器的`nginx`用户的密码。
 
 5. 回退（可选）
 ansible-playbook -i hosts.dev.deploy app_rollback.yml --extra-vars "@vars/bigcat_dev.yml" --ask-sudo-pass
@@ -40,6 +41,15 @@ ansible-playbook -i hosts.dev.deploy app_rollback.yml --extra-vars "@vars/bigcat
 git tag v1.0.x  &&  git push CIL --tags
 
 ```
+
+## 完整执行一次自动部署
+##### 4.1 在第一次`[nginx-exclude : pause]`的时候，验证服务可以正常使用，并且只有`app2`提供服务。
+##### 4.2 回车继续，在接着的`[deploy-app : pause]`的时候，验证`app1`的服务可以正常使用。
+##### 4.3 回车继续，在`[nginx-full : pause]`的时候，验证服务可以正常使用，并且`app1`和`app2`都提供服务。
+##### 4.4 回车继续，在第二次`[nginx-exclude : pause]`的时候，验证服务可以正常使用，并且只有`app1`提供服务。
+##### 4.5 回车继续，在接着的`[deploy-app : pause]`的时候，验证`app2`的服务可以正常使用。
+##### 4.6 回车继续，在`[nginx-full : pause]`的时候，验证服务可以正常使用，并且`app1`和`app2`都提供服务。
+##### 4.7 部署完成。
 
 ## 服务器配置
 
