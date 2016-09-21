@@ -23,6 +23,6 @@
     - debug: msg="{{current_softlink.stdout}}"
     - local_action: copy content={{ current_softlink.stdout }} dest=./rollback.version
   roles:
-    - { role: nginx-exclude }
+    - { role: nginx-exclude, when: '"nginxservers" in groups' }
     - { role: deploy-app }
-    - { role: nginx-full }
+    - { role: nginx-full, when: '"nginxservers" in groups' }

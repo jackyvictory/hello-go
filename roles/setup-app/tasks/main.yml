@@ -1,6 +1,8 @@
 ---
   - name: Adding QUICKPAY_ENV in /home/{{user_name}}/.profile
     lineinfile: dest=/home/{{user_name}}/.profile line='export QUICKPAY_ENV={{quickpay_env}}' regexp='export QUICKPAY_ENV={{quickpay_env}}' state=present
+  - name: Adding HOST in /home/{{user_name}}/.profile
+    lineinfile: dest=/home/{{user_name}}/.profile line='export HOST={{ansible_hostname}}' regexp='export HOST={{ansible_hostname}}' state=present
   - name: Source file /home/{{user_name}}/.profile
     shell: . /home/{{user_name}}/.profile
     become: yes

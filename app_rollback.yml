@@ -15,6 +15,6 @@
     - debug: msg="current version, {{current_softlink.stdout}}, previous version, {{previous_version}}"
     # if {{previous_version}} == {{current_softlink.stdout}}, skip
   roles:
-    - { role: nginx-exclude, when: 'current_softlink.stdout != "{{previous_version}}"' }
+    - { role: nginx-exclude, when: 'current_softlink.stdout != "{{previous_version}}" and "nginxservers" in groups'  }
     - { role: rollback-app, when: 'current_softlink.stdout != "{{previous_version}}"' }
-    - { role: nginx-full, when: 'current_softlink.stdout != "{{previous_version}}"' }
+    - { role: nginx-full, when: 'current_softlink.stdout != "{{previous_version}}" and "nginxservers" in groups'  }
