@@ -23,8 +23,11 @@
     command: chdir=/opt/nginx-{{nginx_version}}/ make install creates={{nginx_location}}
   - name: change ownership of nginx installation
     file: path={{nginx_location}}/ owner={{user_name}} group={{user_name}} state=directory recurse=yes
-  - name: copy nginx.conf to {{nginx_location}}/conf
-    copy: src="nginx_conf/nginx.conf" dest={{nginx_location}}/conf mode=0644
+  - name: 使得nginx在`nginx`用户下具有绑定1024以下端口的权限
+    command: setcap cap_net_bind_service=ep {{nginx_location}}/sbin/nginx
+  - name: 暂时解压线上nginx的conf包到{{nginx_location}}/conf目录
+    unarchive: src={{ item }} dest={{nginx_location}}
+    with_fileglob: "nginx_conf_archive/nginx_conf_online.tar.gz"
     become: yes
     become_user: "{{user_name}}"
   - name: make {{nginx_location}}/conf/sites if exists
@@ -39,6 +42,5 @@
   - name: start nginx
 #    command: chdir={{nginx_location}} sbin/nginx -s reload
     command: chdir={{nginx_location}} sbin/nginx
-# can't become to nginx and with sudo permission
-#    become: yes
-#    become_user: "{{user_name}}"
+    become: yes
+    become_user: "{{user_name}}"

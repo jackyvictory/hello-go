@@ -11,7 +11,5 @@
     - name: reload nginx
       command: chdir={{nginx_location}} sbin/nginx -s reload
       delegate_to: "{{ item }}"
-      become: yes
-      become_method: sudo
       with_items: "{{groups.nginxservers}}"
     - pause: prompt="service is removed from load balancer and please verify ..."
