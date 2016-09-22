@@ -1,8 +1,7 @@
 # inventory naming conversion: use domain name
 
 [nginxservers]
-# 测试环境还不具备能力做滚动部署
-# test.ipay.so ansible_host=121.40.86.222 ansible_port=22 ansible_user=webapp
+test.ipay.so ansible_host=121.40.86.222 ansible_port=22 ansible_user=webapp
 
 [webservers]
 test.ipay.so ansible_host=121.40.86.222 ansible_port=22 ansible_user=webapp

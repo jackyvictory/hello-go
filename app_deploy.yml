@@ -16,7 +16,8 @@
     package_location: ../dist
     nginx_location: /opt/nginx
   pre_tasks:
-  # TODO: 校验工作??? 包是否存在
+    # check if package exists, if not, stop
+    - local_action: shell ls {{package_location}}/{{app_name}}*.{{quickpay_env}}.tar.gz
     - name: get current softlink
       shell: ls -l {{workspace}} | grep "{{softlink_name}} ->" | awk 'NF>1{print $NF}' | awk -F'/' '{print $NF}'
       register: current_softlink
