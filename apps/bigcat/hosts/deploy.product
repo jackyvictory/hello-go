@@ -1,0 +1,8 @@
+# inventory naming conversion: use domain name
+
+[nginxservers]
+ngx1.set.shou.money ansible_host=121.40.167.112 ansible_port=22 ansible_user=nginx
+
+[webservers]
+app1.set.shou.money ansible_host=121.40.224.235 ansible_port=22 ansible_user=quick
+app2.set.shou.money ansible_host=121.40.225.122 ansible_port=22 ansible_user=quick
