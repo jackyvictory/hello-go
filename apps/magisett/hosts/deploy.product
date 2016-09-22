@@ -1,0 +1,3 @@
+[webservers]
+magisett1 ansible_host=114.55.250.14 ansible_port=22 ansible_user=quick
+magisett2 ansible_host=114.55.250.24 ansible_port=22 ansible_user=quick
