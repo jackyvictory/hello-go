@@ -1,0 +1,49 @@
+---
+# ansible-playbook -i apps/logstash/hosts/setup.dev logstash-setup.yml --ask-sudo-pass
+
+- hosts: webservers
+  become: yes
+  become_method: sudo
+  vars:
+    logstash_conf_file: ls-for-go.conf
+    logstash_conf_template: templates/ls-for-go.conf.j2
+    es_address: 10.171.255.144
+    index_name: go-log
+  pre_tasks:
+    # check if conf template exists, if not, stop
+    - local_action: shell ls {{logstash_conf_template}}
+      become: no
+  roles:
+    - { role: setup-logstash }
+
+
+- hosts: nginxservers
+  become: yes
+  become_method: sudo
+  vars:
+    logstash_conf_file: nginx_log.conf
+    logstash_conf_template: templates/ls-for-nginx.conf.j2
+    es_address: 10.171.255.144
+    index_name: nginx_access
+  pre_tasks:
+    # check if conf template exists, if not, stop
+    - local_action: shell ls {{logstash_conf_template}}
+      become: no
+  roles:
+    - { role: setup-logstash }
+
+
+- hosts: dbservers
+  become: yes
+  become_method: sudo
+  vars:
+    logstash_conf_file: ls-for-mongo.conf
+    logstash_conf_template: templates/ls-for-mongo.conf.j2
+    es_address: 10.171.255.144
+    index_name: mongodb-slow
+  pre_tasks:
+    # check if conf template exists, if not, stop
+    - local_action: shell ls {{logstash_conf_template}}
+      become: no
+  roles:
+    - { role: setup-logstash }

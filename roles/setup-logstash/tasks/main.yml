@@ -1,0 +1,15 @@
+---
+  - name: logstash apt-key
+    apt_key: url=https://packages.elastic.co/GPG-KEY-elasticsearch state=present
+  - name: logstash apt_repository
+    apt_repository: repo="deb https://packages.elastic.co/logstash/2.3/debian stable main" state=present
+  - name: apt-get update
+    apt: update_cache=yes cache_valid_time=3600
+  - name: make sure jre installed
+    apt: name=openjdk-7-jre state=latest install_recommends=no
+  - name: make sure logstash installed
+    apt: name=logstash state=latest install_recommends=no
+  - name: copy logstash conf {{logstash_conf_file}} from template {{logstash_conf_template}}
+    template: src={{logstash_conf_template}} dest=/etc/logstash/conf.d/{{logstash_conf_file}}
+  - name: make sure logstash running
+    service: name=logstash state=started

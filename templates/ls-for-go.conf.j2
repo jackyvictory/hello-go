@@ -1,0 +1,32 @@
+input {
+  #stdin {}
+  file {
+    type => "golog"
+    # quick_pay, phantom, bigcat, magisync03, magisync_mgo2mgo
+    path => ["/opt/*/logs/quickpay.log", "/opt/*/logs/phantom.log", "/opt/*/logs/bigcat.log", "/opt/*/logs/magisync03.log", "/opt/*/logs/magisync_mgo2mgo.log"]
+    #start_position => beginning
+  }
+}
+
+filter {
+  multiline {
+    pattern => "^\d\d\d\d-\d\d-\d\d\s+\d\d:\d\d:\d\d\s+"
+    what => "previous"
+    negate => "true"
+  }
+
+  grok {
+    match => ["message", "%{TIMESTAMP_ISO8601:timestamp}\s+%{LOGLEVEL:severity}\s+(?<source>[^\s]+)\s+%{GREEDYDATA:body}"]
+  }
+  if [severity] =~ "(info|debug)" {
+    drop {}
+  }
+}
+
+output {
+  elasticsearch {
+    hosts => ["{{es_address}}"]
+    index => "logstash-{{index_name}}-%{+YYYY.MM.dd}"
+  }
+  #stdout { codec => rubydebug }
+}
