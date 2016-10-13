@@ -11,6 +11,8 @@
   # current -> app20160909112849
   - name: create softlink to latest version {{app_latestversion.stdout}} of app
     file: src={{workspace}}{{app_latestversion.stdout}} dest={{workspace}}{{softlink_name}} state=link
+  - name: sleep 60 seconds ...
+    wait_for: timeout=60
   - name: restart app
     shell: chdir={{workspace}}{{softlink_name}} bash -l './restart.sh'
     register: restart_logs
