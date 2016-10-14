@@ -1,0 +1,15 @@
+# 建议部署使用专属的APP账号,不使用高权限如ROOT/SUDO账号
+# 只完成替换APP包的动作和重启
+
+---
+
+#1. remove self from nginx upstream pool
+#2. add self to nginx upstream pool
+
+- hosts: webservers
+  serial: 1
+  vars:
+    nginx_location: /opt/nginx
+  roles:
+    - { role: nginx-exclude, when: '"nginxservers" in groups' }
+    - { role: nginx-full, when: '"nginxservers" in groups' }
