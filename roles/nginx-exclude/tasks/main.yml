@@ -12,4 +12,6 @@
       command: chdir={{nginx_location}} sbin/nginx -s reload
       delegate_to: "{{ item }}"
       with_items: "{{groups.nginxservers}}"
+    - name: sleep 60 seconds ...
+      wait_for: timeout=60
     - pause: prompt="service is removed from load balancer and please verify ..."
